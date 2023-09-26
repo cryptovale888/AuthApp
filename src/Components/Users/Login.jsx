@@ -1,13 +1,21 @@
 import { useState } from "react";
+import firebaseConfig from "../firebaseConfig";
+// import "firebase/compat/auth";
+import { signInWithEmailAndPassword } from "firebase / auth";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
 
-  const handlesubmit = (e) => {
-    e.preventDefault();
-    console.log(username);
-    console.log(pass);
+  const handlesubmit = async (username, pass) => {
+    // e.preventDefault();
+    // console.log(username);
+    // console.log(pass);
+    try {
+      await signInWithEmailAndPassword(username, pass);
+    } catch (error) {
+      alert(error.msg);
+    }
   };
 
   const handleUsernameChange = (e) => {
