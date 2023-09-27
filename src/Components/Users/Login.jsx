@@ -1,65 +1,56 @@
-import { useState } from "react";
-import firebaseConfig from "../firebaseConfig";
-// import "firebase/compat/auth";
-import { signInWithEmailAndPassword } from "firebase / auth";
+import React, { useState } from 'react';
+import { auth } from './firebaseConfig';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
 function Login() {
-  const [username, setUsername] = useState("");
-  const [pass, setPass] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handlesubmit = async (username, pass) => {
-    // e.preventDefault();
-    // console.log(username);
-    // console.log(pass);
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+const signIn = async () => {
     try {
-      await signInWithEmailAndPassword(username, pass);
-    } catch (error) {
-      alert(error.msg);
+      await signInWithEmailAndPassword(auth, email, password);
+      alert('Successfully logged in!')
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
     }
   };
 
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
-  };
-  const handlePassChange = (e) => {
-    setPass(e.target.value);
-  };
-
   return (
-    <main>
+    <div className="login">
+      <h2>Login</h2>
       <div>
-        <h1>Login page</h1>
-      </div>
-      <div>
-        <form onSubmit={handlesubmit}>
-          <label htmlFor="username">User Name:</label>
-          <br></br>
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
           <input
-            autoComplete="on"
             type="text"
             id="username"
             name="username"
-            value={username}
-            onChange={handleUsernameChange}
+            onChange={handleEmailChange}
             required
-          ></input>
-          <br></br>
-          <label htmlFor="pass">Password:</label>
-          <br></br>
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Password:</label>
           <input
-            autoComplete="on"
             type="password"
-            id="pass"
-            name="pass"
-            value={pass}
-            onChange={handlePassChange}
+            id="password"
+            name="password"
+            onChange={handlePasswordChange}
             required
-          ></input>
-          <br></br>
-          <input type="submit" value="Submit"></input>
-        </form>
+          />
+        </div>
+        <button onClick={ signIn}>Login</button>
       </div>
-    </main>
+    </div>
   );
 }
 
